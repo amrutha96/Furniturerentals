@@ -10,9 +10,14 @@ app.use(express.static("static"));
 // Get the functions in the db.js file to use
 const db = require('./services/db');
 
+// Use the Pug templating engine
+app.set('view engine', 'pug');
+app.set('views', './app/views');
+
 // Create a route for root - /
 app.get("/", function(req, res) {
-    res.send("Hello world!");
+    // Send the array through to the template as a variable called data
+    res.render("user_index", {'title':'User dashboard', 'heading':'Welcome to Furlenco'}); 
 });
 
 // Create a route for testing the db
@@ -23,6 +28,21 @@ app.get("/db_test", function(req, res) {
         console.log(results);
         res.send(results)
     });
+});
+app.get("/list_furnitures", function (req, res) {
+    sql = 'select * from furnitures';
+    db.query(sql).then(results => {
+    	    // Send the results rows to the all-furnitures template
+    	    // The rows will be in a variable called data
+        res.render('all-furnitures', {data: results});
+    });
+
+});
+
+// Create a route for /goodbye
+// Responds to a 'GET' request
+app.get("/single-furniture", function(req, res) {
+    res.send("coming soon");
 });
 
 // Create a route for /goodbye
