@@ -23,9 +23,9 @@ class Furnitures {
     async getFurnitureDetails() {
         if (typeof this.name !== 'string') {
             var sql = "SELECT * from furnitures where furniture_id = ?"
-            const results = await db.query(sql, [this.id]);
-            this.name = results[0].furniture_name;
-            this.description = results[0].furniture_desc;
+            const results = await db.query(sql, [this.furniture_id]);
+            this.furniture_name = results[0].furniture_name;
+            this.furniture_desc = results[0].furniture_desc;
         }
 
     }

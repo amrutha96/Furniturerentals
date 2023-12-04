@@ -51,30 +51,30 @@ app.get("/list_furnitures", function (req, res) {
 
 });
 
-app.get("/single-furniture/:id", function (req, res) { 
-    // var furniture_Id = req.params.id;
-    // console.log(furniture_Id);
-    // // Create a student class with the ID passed
-    // var furniture = new Furnitures(furniture_Id);
-    // console.log(furniture);
-    // await furniture.getFurnitureDetails();
-    // res.render('furniture', {furniture:furniture});
-
-
+app.get("/single-furniture/:id", async function (req, res) { 
     var furniture_Id = req.params.id;
-    output = '';
-    //Get the programme title
-    var pSql = "SELECT * FROM furnitures WHERE furniture_id = ?";
-    var output = '<table>';
-    db.query(pSql, [furniture_Id]). then(results => {
-                output += '<tr>';
-                output += '<td>' + results[0].furniture_name+ '</td>';
-                output += '</tr><tr>';
-                output += '<td>' +  results[0].furniture_desc + '</td>';
-                output += '</tr>'
-            output+= '</table>';
-            res.send(output); 
-    });
+    // Create a student class with the ID passed
+    var single_furniture = new Furnitures(furniture_Id);
+    // console.log(furniture);
+    await single_furniture.getFurnitureDetails();
+    res.render('furniture_detail', {single_furniture});
+    console.log(data);
+
+
+    // var furniture_Id = req.params.id;
+    // output = '';
+    // //Get the programme title
+    // var pSql = "SELECT * FROM furnitures WHERE furniture_id = ?";
+    // var output = '<table>';
+    // db.query(pSql, [furniture_Id]). then(results => {
+    //             output += '<tr>';
+    //             output += '<td>' + results[0].furniture_name+ '</td>';
+    //             output += '</tr><tr>';
+    //             output += '<td>' +  results[0].furniture_desc + '</td>';
+    //             output += '</tr>'
+    //         output+= '</table>';
+    //         res.send(output); 
+    // });
         
 });
 
