@@ -6,7 +6,7 @@ var app = express();
 
 // Add static files location
 app.use(express.static("static"));
-app.use(express.urlencoded({ extended: true }));
+
 
 // Get the functions in the db.js file to use
 const db = require('./services/db');
@@ -14,6 +14,8 @@ const db = require('./services/db');
 // Use the Pug templating engine
 app.set('view engine', 'pug');
 app.set('views', './app/views');
+app.use(express.urlencoded({ extended: true }))
+app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
 
 // Get the models
 const { Furnitures } = require("./models/furnitures");
@@ -34,14 +36,46 @@ app.get("/db_test", function(req, res) {
         res.send(results)
     });
 });
-app.get("/list_furnitures", async function (req, res) {
+app.get("/list_furnitures", function (req, res) {
     	    // Send the results rows to the all-furnitures template
     	    // The rows will be in a variable called data
-            var furniture = new Furnitures;
-            console.log(furniture);
-            await furniture.getFurnitureList();
-            res.render('all-furnitures', {furniture: furniture});
+            // var furniture = new Furnitures;
+            // console.log(furniture);
+            // await furniture.getFurnitureList();
+            // res.render('all-furnitures', {furniture: furniture});
 
+            sql = 'select furniture_id, furniture_name from furnitures';
+            db.query(sql).then(results => {
+                res.render('all-furnitures', {furniture: results});
+            });
+
+});
+
+app.get("/single-furniture/:id", function (req, res) { 
+    // var furniture_Id = req.params.id;
+    // console.log(furniture_Id);
+    // // Create a student class with the ID passed
+    // var furniture = new Furnitures(furniture_Id);
+    // console.log(furniture);
+    // await furniture.getFurnitureDetails();
+    // res.render('furniture', {furniture:furniture});
+
+
+    var furniture_Id = req.params.id;
+    output = '';
+    //Get the programme title
+    var pSql = "SELECT * FROM furnitures WHERE furniture_id = ?";
+    var output = '<table>';
+    db.query(pSql, [furniture_Id]). then(results => {
+                output += '<tr>';
+                output += '<td>' + results[0].furniture_name+ '</td>';
+                output += '</tr><tr>';
+                output += '<td>' +  results[0].furniture_desc + '</td>';
+                output += '</tr>'
+            output+= '</table>';
+            res.send(output); 
+    });
+        
 });
 
 // Create a route for /goodbye

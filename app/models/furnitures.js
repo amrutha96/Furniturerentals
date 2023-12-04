@@ -7,6 +7,8 @@ class Furnitures {
     // furniture name
     furniture_name;
 
+    furniture_desc;
+
 
     constructor(furniture_id) {
         this.furniture_id = furniture_id;
@@ -14,9 +16,18 @@ class Furnitures {
     
     // Gets the programme of this student
     async getFurnitureList()  {
-            var sql = "SELECT furniture_id, furniture_name from furnitures WHERE is_delete = 0"
+            var sql = "SELECT * from furnitures"
             const results = await db.query(sql);        
        
+    }
+    async getFurnitureDetails() {
+        if (typeof this.name !== 'string') {
+            var sql = "SELECT * from furnitures where furniture_id = ?"
+            const results = await db.query(sql, [this.id]);
+            this.name = results[0].furniture_name;
+            this.description = results[0].furniture_desc;
+        }
+
     }
 }
 
