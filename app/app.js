@@ -6,6 +6,7 @@ var app = express();
 
 // Add static files location
 app.use(express.static("static"));
+app.use(express.urlencoded({ extended: true }));
 
 // Get the functions in the db.js file to use
 const db = require('./services/db');
@@ -14,10 +15,14 @@ const db = require('./services/db');
 app.set('view engine', 'pug');
 app.set('views', './app/views');
 
+// Get the models
+const { Furnitures } = require("./models/furnitures");
+
 // Create a route for root - /
 app.get("/", function(req, res) {
+    res.render("home", {'title':'Home', 'heading':'Welcome to Furlenco'});
     // Send the array through to the template as a variable called data
-    res.render("user_index", {'title':'User dashboard', 'heading':'Welcome to Furlenco'}); 
+    // res.render("user_dashboard", {'title':'User dashboard', 'heading':'Welcome to Furlenco'}); 
 });
 
 // Create a route for testing the db
@@ -29,13 +34,13 @@ app.get("/db_test", function(req, res) {
         res.send(results)
     });
 });
-app.get("/list_furnitures", function (req, res) {
-    sql = 'select * from furnitures';
-    db.query(sql).then(results => {
+app.get("/list_furnitures", async function (req, res) {
     	    // Send the results rows to the all-furnitures template
     	    // The rows will be in a variable called data
-        res.render('all-furnitures', {data: results});
-    });
+            var furniture = new Furnitures;
+            console.log(furniture);
+            await furniture.getFurnitureList();
+            res.render('all-furnitures', {furniture: furniture});
 
 });
 
