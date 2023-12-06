@@ -23,19 +23,8 @@ const { Furnitures } = require("./models/furnitures");
 // Create a route for root - /
 app.get("/", function(req, res) {
     res.render("home", {'title':'Home', 'heading':'Welcome to Furlenco'});
-    // Send the array through to the template as a variable called data
-    // res.render("user_dashboard", {'title':'User dashboard', 'heading':'Welcome to Furlenco'}); 
 });
 
-// Create a route for testing the db
-app.get("/db_test", function(req, res) {
-    // Assumes a table called test_table exists in your database
-    sql = 'select * from test_table';
-    db.query(sql).then(results => {
-        console.log(results);
-        res.send(results)
-    });
-});
 app.get("/list_furnitures", function (req, res) {
     	    // Send the results rows to the all-furnitures template
     	    // The rows will be in a variable called data
@@ -58,48 +47,36 @@ app.get("/single-furniture/:id", async function (req, res) {
     // console.log(furniture);
     await single_furniture.getFurnitureDetails();
     res.render('furniture_detail', {single_furniture});
-    console.log(data);
-
-
-    // var furniture_Id = req.params.id;
-    // output = '';
-    // //Get the programme title
-    // var pSql = "SELECT * FROM furnitures WHERE furniture_id = ?";
-    // var output = '<table>';
-    // db.query(pSql, [furniture_Id]). then(results => {
-    //             output += '<tr>';
-    //             output += '<td>' + results[0].furniture_name+ '</td>';
-    //             output += '</tr><tr>';
-    //             output += '<td>' +  results[0].furniture_desc + '</td>';
-    //             output += '</tr>'
-    //         output+= '</table>';
-    //         res.send(output); 
-    // });
         
 });
 
-// Create a route for /goodbye
-// Responds to a 'GET' request
-app.get("/single-furniture", function(req, res) {
-    res.send("coming soon");
+app.get("/admin/location", function (req, res) {
+
+    sql = 'select * from store_location';
+    db.query(sql).then(results => {
+        res.render('store_locations', {locations: results});
+    });
+
 });
 
-// Create a route for /goodbye
-// Responds to a 'GET' request
-app.get("/goodbye", function(req, res) {
-    res.send("Goodbye world!");
+app.post('/add-location', async function (req, res) {
+    params = req.body;
+    console.log(params);
+     var sql = "UPDATE store_location SET store_address ="+params.store_address +'" WHERE store_id = "' + params.store_id+'"';
+     con.query(sql, function (err, result) {
+       if (err) throw err;
+       console.log(result.affectedRows + " record(s) updated");
+       // Just a little output for now
+     res.redirect('/admin/location');
+     });
+
+
+
+     
+
 });
 
-// Create a dynamic route for /hello/<name>, where name is any value provided by user
-// At the end of the URL
-// Responds to a 'GET' request
-app.get("/hello/:name", function(req, res) {
-    // req.params contains any parameters in the request
-    // We can examine it in the console for debugging purposes
-    console.log(req.params);
-    //  Retrieve the 'name' parameter and use it in a dynamically generated page
-    res.send("Hello " + req.params.name);
-});
+
 
 // Start server on port 3000
 app.listen(3000,function(){
