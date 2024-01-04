@@ -11,11 +11,14 @@ app.use(express.static("static"));
 // Get the functions in the db.js file to use
 const db = require('./services/db');
 
+
 // Use the Pug templating engine
 app.set('view engine', 'pug');
 app.set('views', './app/views');
 app.use(express.urlencoded({ extended: true }))
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
+app.use(express.static('public'));
+
 
 // Get the models
 const { Furnitures } = require("./models/furnitures");

@@ -1,0 +1,55 @@
+/* Reset some default styles */
+body, h1, h2, h3, p, ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Apply a basic style to the body */
+  body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: darkorange
+    
+  }
+  
+  /* Style the header */
+  header {
+    background-color: aqua;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  /* Style the navigation bar */
+  nav {
+    background-color: #444;
+    padding: 10px;
+  }
+  
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+    display: inline-block;
+  }
+  
+  /* Style the main content area */
+  main {
+    padding: 20px;
+  }
+  
+  /* Apply a simple style to headings */
+  h1, h2, h3 {
+    color: #333;
+  }
+  
+  /* Style links */
+  a {
+    color: hotpink;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
