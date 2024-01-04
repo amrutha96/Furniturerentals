@@ -39,6 +39,16 @@ app.get("/list_furnitures", function (req, res) {
 
 });
 
+app.get("/list_furniturecategory", function (req, res) {
+    sql = 'select * from furniturescategory';
+    db.query(sql).then(results => {
+    	    // Send the results rows to the all-furnitures template
+    	    // The rows will be in a variable called data
+        res.render('all-furniturescategory', {data: results});
+    });
+
+});
+
 // Create a route for /goodbye
 // Responds to a 'GET' request
 app.get("/single-furniture", function(req, res) {
