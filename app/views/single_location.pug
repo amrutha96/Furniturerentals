@@ -1,0 +1,14 @@
+extends layout
+block content
+    h1 Store location page for: #{storelocation.store_address}
+    h2 Add a note about this student
+    //- form(action='/add-location', method='POST')
+    //-     input(type='hidden' name='store_id' value=storelocation.store_id)
+    //-     textarea(name='store_address' rows=6 cols=50)
+    //-     div 
+    //-         input(type='submit' value='Submit')
+    form(action="/update-location" method="post")
+      input(type='hidden' name='store_id' value=storelocation.store_id)
+      textarea(name="store_address" rows="4" cols="50" value=storelocation.store_address) #{storelocation.store_address}
+      br
+      input(type="submit" value="Submit")
