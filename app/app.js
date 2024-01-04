@@ -54,11 +54,42 @@ app.get("/single-furniture/:id", async function (req, res) {
 // Create a route for root - /
 app.get("/admin", function(req, res) {
     res.render("admin", {'title':'Admin', 'heading':'Welcome to Furlenco Admin'});
+
+
+
+
+
+
+
+
+
+
+
+    // Adding a new route for registration
+app.get("/admin/register", function(req, res) {
+    res.render("registration", {'title':'Register', 'heading':'Register for Furlenco Admin'});
+    
 });
+
+app.listen(port, () => {
+    console.log(`Server is running at http://127.0.0.1:3000`);
+});
+});
+
+
+
+
+
+
+
+
 // Create a route for root - /
 app.get("/", function(req, res) {
     res.render("home", {'title':'Home', 'heading':'Welcome to Furlenco'});
 });
+
+
+
 
 app.get("/admin/location", function (req, res) {
 

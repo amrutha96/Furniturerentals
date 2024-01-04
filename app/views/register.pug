@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1 #{heading}
+
+  // Form for registration
+  form(action="/register", method="post")
+    label(for="email") Email:
+    input(type="email", id="email", name="email", placeholder="Enter your email", required)
+    br
+    label(for="password") Password:
+    input(type="password", id="password", name="password", placeholder="Enter your password", required)
+    br
+    input(type="submit", value="Submit")
