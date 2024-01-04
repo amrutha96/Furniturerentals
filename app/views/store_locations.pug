@@ -6,8 +6,11 @@ block content
         for item, index  in locations 
             tr  
                 td  #{index + 1}
+                td #{item.store_address}
                 td 
-                    #{item.store_address}
+                    a(href='/single-location/' + item.store_id) edit 
+                td 
+                    a(href='/delete-location/' + item.store_id) delete   
     h2 Add Store Location
     form(action='/add-location', method='POST')
         textarea(name='store_address' rows=6 cols=50)

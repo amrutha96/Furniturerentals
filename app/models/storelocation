@@ -1,0 +1,25 @@
+// Get the functions in the db.js file to use
+const db = require('./../services/db');
+class Storelocation {
+    // store ID
+    store_id;
+    // Store address
+    store_address;
+
+    constructor(store_id) {
+        this.store_id = store_id;
+    }
+    
+    async getStoreDetails() {
+        if (typeof this.name !== 'string') {
+            var sql = "SELECT * from store_location where store_id = ?"
+            const results = await db.query(sql, [this.store_id]);
+            this.store_address = results[0].store_address;
+        }
+
+    }
+}
+
+module.exports = {
+    Storelocation
+}
