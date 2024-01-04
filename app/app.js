@@ -7,6 +7,9 @@ var app = express();
 // Add static files location
 app.use(express.static("static"));
 
+const multer = require('multer');
+const path = require('path');
+
 
 // Get the functions in the db.js file to use
 const db = require('./services/db');
@@ -23,6 +26,21 @@ app.use(express.static('public'));
 // Get the models
 const { Furnitures } = require("./models/furnitures");
 const { Storelocation } = require("./models/storelocation");
+
+
+// Set up Multer for handling file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  });
+  
+const upload = multer({ storage: storage });
+// Serve static files (uploaded images)
+app.use(express.static('uploads'));
 
 // Create a route for root - /
 app.get("/", function(req, res) {
@@ -53,6 +71,25 @@ app.get("/single-furniture/:id", async function (req, res) {
     res.render('furniture_detail', {single_furniture});
         
 });
+//   adding new furniture
+
+app.get("/add-furniture/", function (req, res) {
+    all_category = 'select category_id, category_name from furniturecategory';
+    db.query(all_category).then(result => {
+        category = result;
+        sql = 'select * from furnitures';
+        db.query(sql).then(results => {
+            res.render('admin-furnitures', {furniture: results, category:category});
+        });
+    });
+
+});
+
+
+
+
+
+
 
 //  Starting admin part
 // Create a route for root - /

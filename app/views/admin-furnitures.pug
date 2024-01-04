@@ -1,0 +1,36 @@
+extends layout
+block content
+    .main-content 
+    h1 All furnitures 
+    table(border=1)
+        for item, index  in furniture 
+            tr  
+                td  #{index + 1}
+                td 
+                    a(href='/single-furniture/' + item.furniture_id) #{item.furniture_name}
+  
+    div.container 
+    h2 Add new furniture
+    form(action='/submit', method='post')
+    .form-group
+        label(for='name') Name:
+        input#name.form-control(type='text', name='furniture_name', required)
+    
+    .form-group
+        label(for='email') Email:
+        textarea#message.form-control(name='furniture_desc', rows='4')
+    
+    .form-group
+        label(for='message') Length:
+        input#name.form-control(type='text', name='furniture_length')
+
+    .form-group
+        label(for='message') Width:
+        input#name.form-control(type='text', name='furniture_width' )    
+
+    .form-group
+        label(for='message') Image:
+        input#name.form-control(type='file', name='furniture_image')      
+
+    button.btn.btn-primary(type='submit') Submit       
+        
