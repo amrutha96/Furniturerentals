@@ -11,14 +11,18 @@ app.use(express.static("static"));
 // Get the functions in the db.js file to use
 const db = require('./services/db');
 
+
 // Use the Pug templating engine
 app.set('view engine', 'pug');
 app.set('views', './app/views');
 app.use(express.urlencoded({ extended: true }))
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist'));
+app.use(express.static('public'));
+
 
 // Get the models
 const { Furnitures } = require("./models/furnitures");
+const { Storelocation } = require("./models/storelocation");
 
 // Create a route for root - /
 app.get("/", function(req, res) {
@@ -102,22 +106,43 @@ app.get("/admin/location", function (req, res) {
 
 app.post('/add-location', async function (req, res) {
     params = req.body;
-    console.log(params);
-     var sql = "UPDATE store_location SET store_address ="+params.store_address +'" WHERE store_id = "' + params.store_id+'"';
-     con.query(sql, function (err, result) {
-       if (err) throw err;
-       console.log(result.affectedRows + " record(s) updated");
-       // Just a little output for now
-     res.redirect('/admin/location');
-     });
-
-
-
-     
-
+        // insert statment
+        let sql = 'INSERT INTO store_location(store_address) VALUES(?)';
+        let todo = [params.store_address];
+        // execute the insert statment
+        db.query(sql, todo, (err, results, fields) => {
+          if (err) return console.error(err.message);
+        });
+        res.redirect('/admin/location');
 });
 
+app.get("/single-location/:id", async function (req, res) { 
+    var locationId = req.params.id;
+    // Create a student class with the ID passed
+    var storelocation = new Storelocation(locationId);
+    await storelocation.getStoreDetails();
+    res.render('single_location', {storelocation:storelocation});
+});
 
+app.post('/update-location', async function (req, res) {
+    console.log( req.body)
+    var sql = "UPDATE store_location SET store_address = ? WHERE store_id = ?"
+    db.query(sql, [ req.body.store_address,  req.body.store_id],(err, results,fields) => {
+        if (err) return console.error(err.message);
+    });   
+
+     res.redirect('admin/location');
+});
+app.get('/delete-location/:id', async function (req, res) {
+    var locationId = req.params.id;  
+    const deleteQuery = 'DELETE FROM store_location WHERE store_id = ?';
+
+    // Execute the query
+    db.query(deleteQuery,[locationId], (error, results, fields) => {
+      if (error) throw error;
+    });
+    res.redirect('admin/location');
+});
 
 // Start server on port 3000
 app.listen(3000,function(){
