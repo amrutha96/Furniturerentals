@@ -10,7 +10,6 @@ block content
                     #{item.store_address}
     h2 Add Store Location
     form(action='/add-location', method='POST')
-        input(type='hidden' name='id' value=item.store_id)
         textarea(name='store_address' rows=6 cols=50)
         div 
             input(type='submit' value='Submit')

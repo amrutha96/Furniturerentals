@@ -50,6 +50,16 @@ app.get("/single-furniture/:id", async function (req, res) {
         
 });
 
+//  Starting admin part
+// Create a route for root - /
+app.get("/admin", function(req, res) {
+    res.render("admin", {'title':'Admin', 'heading':'Welcome to Furlenco Admin'});
+});
+// Create a route for root - /
+app.get("/", function(req, res) {
+    res.render("home", {'title':'Home', 'heading':'Welcome to Furlenco'});
+});
+
 app.get("/admin/location", function (req, res) {
 
     sql = 'select * from store_location';
